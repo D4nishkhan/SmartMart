@@ -316,7 +316,7 @@ footer{background:var(--d2);border-top:1px solid rgba(255,255,255,0.06);padding:
 
 <!-- ════ WEBSITE ════ -->
 <nav>
-  <div class="nlogo">SmartMart</div>
+  <div class="nlogo" id="logoBtn">SmartMart</div>
   <ul class="nlinks">
     <li><a href="#new">New Arrivals</a></li>
     <li><a href="#products">Products</a></li>
@@ -446,7 +446,7 @@ footer{background:var(--d2);border-top:1px solid rgba(255,255,255,0.06);padding:
 
 <footer>
   <div class="flogo">SmartMart</div>
-  <div class="ftext">© 2025 SmartMart, Chhatrapati Sambhajinagar</div>
+  <div class="ftext" id="secretTrigger" style="cursor:default;user-select:none">© 2025 SmartMart, Chhatrapati Sambhajinagar</div>
   <div class="ftext">Shaikh Maaz & Shaikh Talha</div>
 </footer>
 
@@ -649,12 +649,22 @@ function openAdmin(){
 function closeAdmin(){
   document.getElementById('adminOverlay').classList.remove('show');
   document.body.style.overflow='';
-  // Secret admin access — Ctrl+Shift+A
-document.addEventListener('keydown', e => {
-  if(e.ctrlKey && e.shiftKey && e.key === 'A') openAdmin();
+  // Method 1: Ctrl+Shift+S
+document.addEventListener('keydown', function(e) {
+  if(e.ctrlKey && e.shiftKey && e.key === 'S') { openAdmin(); }
 });
-// Also secret URL — add ?admin to URL
-if(window.location.search.includes('admin')) openAdmin();
+
+// Method 2: URL ?admin
+if(window.location.search.indexOf('admin') !== -1) { openAdmin(); }
+
+// Method 3: Logo pe 5 baar click
+var logoClicks = 0, logoTimer;
+document.getElementById('logoBtn').addEventListener('click', function() {
+  logoClicks++;
+  clearTimeout(logoTimer);
+  if(logoClicks >= 5) { logoClicks = 0; openAdmin(); }
+  logoTimer = setTimeout(function(){ logoClicks = 0; }, 3000);
+});
 
 initSite();
 }
